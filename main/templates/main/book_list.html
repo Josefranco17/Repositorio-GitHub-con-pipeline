@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Lista de camisetas{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Camisetas</h1>
+        <p class="text-muted">Elige tu camiseta favorita y agrégala al carrito.</p>
+    </div>
+    <div>
+        <a class="btn btn-outline-success me-2" href="{% url 'cart_detail' %}">Ver carrito</a>
+        <a class="btn btn-success" href="{% url 'book_create' %}">Agregar camiseta</a>
+    </div>
+</div>
+
+{% if books %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for book in books %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 220px; object-fit: cover;">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                            <span class="text-muted">Sin imagen</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'book_detail' book.pk %}" class="text-decoration-none">{{ book.title }}</a></h5>
+                        <p class="card-text mb-1"><strong>Equipo:</strong> {{ book.author }}</p>
+                        <p class="card-text"><strong>Temporada:</strong> {{ book.published_date|date:'Y-m-d' }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                        <div>
+                            <a class="btn btn-sm btn-outline-primary" href="{% url 'book_update' book.pk %}">Editar</a>
+                            <a class="btn btn-sm btn-outline-danger" href="{% url 'book_delete' book.pk %}">Eliminar</a>
+                        </div>
+                        <a class="btn btn-sm btn-success" href="{% url 'cart_add' book.pk %}">Añadir al carrito</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">No hay camisetas registradas. Agrega una nueva.</div>
+{% endif %}
+{% endblock %}

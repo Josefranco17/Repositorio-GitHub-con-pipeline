@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Carrito</h1>
+        <p class="text-muted">Revisa tus camisetas antes de finalizar.</p>
+    </div>
+    <div>
+        <a class="btn btn-outline-danger" href="{% url 'cart_clear' %}">Vaciar carrito</a>
+        <a class="btn btn-secondary" href="{% url 'book_list' %}">Seguir comprando</a>
+    </div>
+</div>
+
+{% if items %}
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Camiseta</th>
+                    <th>Equipo</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <strong>{{ item.book.title }}</strong><br>
+                        <small>{{ item.book.published_date|date:'Y' }}</small>
+                    </td>
+                    <td>{{ item.book.author }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" href="{% url 'cart_remove' item.book.pk %}">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="alert alert-secondary">
+        Total de artículos: <strong>{{ total_items }}</strong>
+    </div>
+{% else %}
+    <div class="alert alert-info">Tu carrito está vacío. Agrega algunas camisetas.</div>
+{% endif %}
+{% endblock %}

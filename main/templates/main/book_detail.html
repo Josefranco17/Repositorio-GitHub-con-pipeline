@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="card mb-4 shadow-sm">
+    <div class="row g-0">
+        <div class="col-md-4">
+            {% if book.image %}
+                <img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="{{ book.title }}" style="height: 100%; object-fit: cover;">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center h-100" style="min-height: 260px;">
+                    <span class="text-muted">Sin imagen</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h1 class="card-title">{{ book.title }}</h1>
+                <h5 class="card-subtitle text-muted mb-3">{{ book.author }}</h5>
+                <p class="card-text">{{ book.description|linebreaks }}</p>
+                <p class="text-muted">Temporada: {{ book.published_date|date:'Y-m-d' }}</p>
+                <a class="btn btn-success me-2" href="{% url 'cart_add' book.pk %}">Añadir al carrito</a>
+                <a class="btn btn-primary me-2" href="{% url 'book_update' book.pk %}">Editar</a>
+                <a class="btn btn-danger me-2" href="{% url 'book_delete' book.pk %}">Eliminar</a>
+                <a class="btn btn-secondary" href="{% url 'book_list' %}">Volver a lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
